@@ -65,6 +65,72 @@ themeToggle.addEventListener("click", () => {
 });
 
 
+// BACKGROUND MUSIC
+
+const musicAudio = document.getElementById("wedding-music");
+const musicToggle = document.getElementById("music-toggle");
+const musicIcon = document.getElementById("music-icon");
+const musicLabel = document.getElementById("music-label");
+
+function setMusicPlayingUI(isPlaying) {
+  musicIcon.textContent = isPlaying ? "⏸" : "♪";
+  musicLabel.textContent = isPlaying ? "Pause" : "Music";
+  musicToggle.setAttribute("aria-pressed", String(isPlaying));
+}
+
+async function startMusic() {
+  try {
+    await musicAudio.play();
+    setMusicPlayingUI(true);
+    return true;
+  } catch (error) {
+    // Autoplay blocked by the browser until the visitor interacts.
+    return false;
+  }
+}
+
+musicToggle.addEventListener("click", () => {
+  if (musicAudio.paused) {
+    removeInteractionListeners();
+    startMusic();
+  } else {
+    musicAudio.pause();
+    setMusicPlayingUI(false);
+  }
+});
+
+// Browsers block audio autoplay with sound until the visitor interacts with
+// the page, so try immediately, then fall back to the first interaction.
+const interactionEvents = ["pointerdown", "keydown", "touchstart", "wheel"];
+
+function startOnFirstInteraction(event) {
+  // Let the music toggle button manage playback itself.
+  if (musicToggle.contains(event.target)) return;
+
+  removeInteractionListeners();
+  startMusic();
+}
+
+function removeInteractionListeners() {
+  interactionEvents.forEach(name =>
+    window.removeEventListener(name, startOnFirstInteraction)
+  );
+}
+
+// Wait 3 seconds after the page opens, then try to start the music. If the
+// browser blocks autoplay (first-time visitors), fall back to the visitor's
+// first interaction.
+setTimeout(() => {
+  startMusic().then(started => {
+    if (started) return;
+
+    interactionEvents.forEach(name =>
+      window.addEventListener(name, startOnFirstInteraction)
+    );
+  });
+}, 3000);
+
+
 // TOAST NOTIFICATION
 
 function showToast(message, type = "success") {
@@ -109,7 +175,6 @@ rsvpForm.addEventListener("submit", async event => {
     lastName: formData.get("lastName"),
     contactNumber: formData.get("contactNumber"),
     attendance: formData.get("attendance"),
-    numberOfGuests: formData.get("guestCount"),
     message: formData.get("message")
   };
 
