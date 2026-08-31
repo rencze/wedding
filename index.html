@@ -33,8 +33,15 @@
       <span id="theme-icon">☾</span>
       <span id="theme-label">Dark</span>
     </button>
+
+    <button class="music-toggle" id="music-toggle" type="button" aria-label="Play music" aria-pressed="false">
+      <span id="music-icon" aria-hidden="true">♪</span>
+      <span id="music-label">Music</span>
+    </button>
   </div>
 </nav>
+
+<audio id="wedding-music" src="excpetion-music.mp3" loop preload="auto"></audio>
 
 <!-- PAGE 1 / HERO -->
 <section class="hero" id="home">
@@ -229,23 +236,13 @@
         <input class="form-input" id="contact-number" name="contactNumber" type="tel" placeholder="09XXXXXXXXX">
       </div>
 
-      <div class="form-row">
-        <div class="form-group">
-          <label class="form-label" for="attendance">Attendance</label>
-          <select class="form-select" id="attendance" name="attendance" required>
-            <option value="">Select your response</option>
-            <option value="accepts">Joyfully accepts</option>
-            <option value="declines">Regretfully declines</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label class="form-label" for="guest-count">Number of Guests</label>
-          <select class="form-select" id="guest-count" name="guestCount">
-            <option value="1">1 — Just me</option>
-            <option value="2">2 — Two guests</option>
-          </select>
-        </div>
+      <div class="form-group">
+        <label class="form-label" for="attendance">Attendance</label>
+        <select class="form-select" id="attendance" name="attendance" required>
+          <option value="">Select your response</option>
+          <option value="accepts">Joyfully accepts</option>
+          <option value="declines">Regretfully declines</option>
+        </select>
       </div>
 
       <div class="form-group">
