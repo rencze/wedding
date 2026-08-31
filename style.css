@@ -14,7 +14,11 @@
     --white: #FFFDF9;
   }
 
-  html { scroll-behavior: smooth; }
+  html {
+    scroll-behavior: smooth;
+    /* Prevent horizontal panning on mobile Safari (body alone is not enough) */
+    overflow-x: hidden;
+  }
 
   body {
     font-family: 'Jost', sans-serif;
@@ -320,13 +324,14 @@
   /* COUNTDOWN */
   .countdown { background: var(--white); padding: 4rem 2rem; text-align: center; }
   .countdown-grid {
-    display: flex; justify-content: center; gap: 3rem;
+    display: flex; justify-content: center;
+    gap: clamp(0.9rem, 3vw, 3rem);
     margin-top: 2rem;
   }
   .countdown-item { display: flex; flex-direction: column; align-items: center; gap: 0.4rem; }
   .countdown-num {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 4rem; font-weight: 300; line-height: 1; color: var(--text-dark);
+    font-size: clamp(2rem, 7.5vw, 4rem); font-weight: 300; line-height: 1; color: var(--text-dark);
   }
   .countdown-lbl {
     font-size: 0.62rem; font-weight: 300; letter-spacing: 0.35em;
@@ -334,7 +339,7 @@
   }
   .countdown-sep {
     font-family: 'Cormorant Garamond', serif;
-    font-size: 3rem; font-weight: 300; color: var(--gold-light);
+    font-size: clamp(1.4rem, 5vw, 3rem); font-weight: 300; color: var(--gold-light);
     align-self: flex-start; padding-top: 0.2rem;
   }
 
@@ -375,7 +380,7 @@
     .gallery-grid { grid-template-columns: 1fr 1fr; }
     .gallery-item { grid-column: auto !important; grid-row: auto !important; aspect-ratio: 1 !important; }
     .form-row { grid-template-columns: 1fr; }
-    .countdown-grid { gap: 1.5rem; }
+    .countdown-grid { gap: 1rem; }
   }
 
   /* PRINCESS & JEROME — LILY GREEN / BLUSH THEME */
@@ -460,6 +465,31 @@
   .theme-toggle:hover {
     transform: translateY(-1px);
     border-color: var(--gold);
+  }
+
+  .music-toggle {
+    border: 1px solid var(--border-soft);
+    background: var(--surface);
+    color: var(--text-mid);
+    padding: .58rem .8rem;
+    border-radius: 999px;
+    font-family: 'Jost', sans-serif;
+    font-size: .68rem;
+    font-weight: 300;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: transform .25s ease, border-color .25s ease, background .25s ease;
+  }
+
+  .music-toggle:hover {
+    transform: translateY(-1px);
+    border-color: var(--gold);
+  }
+
+  .music-toggle[aria-pressed="true"] {
+    border-color: var(--gold);
+    color: var(--gold);
   }
 
   .hero {
@@ -601,7 +631,7 @@
 
   @media (max-width: 768px) {
     .nav-right { gap: .8rem; }
-    .theme-toggle { padding: .52rem .68rem; }
+    .theme-toggle, .music-toggle { padding: .52rem .68rem; }
     .details-grid { grid-template-columns: 1fr; }
   }
 
@@ -918,5 +948,26 @@
   @media (max-width: 900px) {
     .venue-view-flower {
       width: clamp(110px, 24vw, 170px);
+    }
+  }
+
+  /* Smaller flowers on phones */
+  @media (max-width: 480px) {
+    .venue-view-flower {
+      width: clamp(64px, 18vw, 90px);
+    }
+
+    .corner-flower {
+      font-size: clamp(1rem, 4vw, 1.4rem);
+    }
+
+    /* Tighter countdown so all four numbers fit a 390px screen */
+    .countdown-grid {
+      gap: 0.75rem;
+    }
+
+    .countdown-lbl {
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
     }
   }
